@@ -17,6 +17,26 @@ const loadVideos=()=>{
     .catch((error)=> console.error('error happend :' , error));
 }
 
+// time set up dynamically
+function onTime (time){
+    const year = parseInt(time / (86400 * 30 * 12))
+    const remainderyear = time % (86400 * 30 * 12)
+   const month= parseInt( remainderyear / (86400 * 30))
+   const remainderMonth= remainderyear % (86400*30)
+
+     const day=  parseInt(remainderMonth/ 86400)
+     const remainderdays=  remainderMonth % 86400
+
+   const hours = parseInt(remainderdays / 3600)
+  
+   const remainderhours = remainderdays % 3600
+   const minute = parseInt(remainderhours / 60)
+   const remainderminute = remainderhours %  60
+   return `${year.length === 0 ? '' :year} Y ${month} M  ${day} Day ${minute} Min ${remainderminute} Sec ago`
+
+}
+
+
 //create display videos
 
 const displayVideos =(videos)=>{
@@ -25,10 +45,14 @@ const displayVideos =(videos)=>{
         const vCard = document.createElement('div')
         vCard.classList='card bg-base-100 '
         vCard.innerHTML=`
-            <figure class="w-full h-[200px]">
+            <figure class="w-full h-[200px] relative">
                 <img
                 src=${item.thumbnail}
-                alt="Thumbnail" class="w-full h-full object-cover" />
+                alt="Thumbnail" class="w-full h-full object-cover"/>
+                 ${
+                    item.others?.posted_date?.length == 0? "" : `<span class="absolute bottom-2 right-2 bg-slate-700 px-2 py-1 rounded-md text-gray-50">${onTime (item.others?.posted_date)}</span>`
+                 }
+               
             </figure>
             <div class=" py-6 flex flex-row gap-4">
                 <div class="w-8 h-8 ">
