@@ -17,6 +17,17 @@ const loadVideos=()=>{
     .catch((error)=> console.error('error happend :' , error));
 }
 
+
+//load categories Videos
+
+const loadCategoriesVideos = (id)=>{
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+    .then(res=> res.json())
+    .then(data => displayVideos(data.category))
+    .catch((error)=> console.error('error happend :' , error));      
+}
+
+
 // time set up dynamically
 function onTime (time){
     const year = parseInt(time / (86400 * 30 * 12))
@@ -38,9 +49,9 @@ function onTime (time){
 
 
 //create display videos
-
 const displayVideos =(videos)=>{
-    const videosContainer =document.getElementById('videos')
+    const videosContainer =document.getElementById('videos');
+      videosContainer.innerHTML =""
      videos.map(item =>{
         const vCard = document.createElement('div')
         vCard.classList='card bg-base-100 '
@@ -79,20 +90,19 @@ const displayVideos =(videos)=>{
 
 
 
-
 // Create Display CAtegories
 const displayCategories = (categories)=>{
      
     const categoriesContainer= document.getElementById('categories')
 
     categories.map((item) => {
-    //  console.log(item.category)
      //create button
-     const button = document.createElement("button");
-     button.classList = 'btn';
-     button.innerText = item.category;
+     const div = document.createElement("div");
+     div.innerHTML = `
+        <button onclick="loadCategoriesVideos(${item.category_id})" class ="btn"> ${item.category}</button>
+     `
      //add button to container
-     categoriesContainer.append(button)
+     categoriesContainer.append(div)
   });
 
   
