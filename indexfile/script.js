@@ -23,7 +23,11 @@ const loadVideos=()=>{
 const loadCategoriesVideos = (id)=>{
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
     .then(res=> res.json())
-    .then(data => displayVideos(data.category))
+    .then(data =>{
+        const activeBtn = document.getElementById(`bg-${id}`);
+         activeBtn.classList='bg-red-300 text-white btn'
+        displayVideos(data.category)
+    })
     .catch((error)=> console.error('error happend :' , error));      
 }
 
@@ -51,8 +55,24 @@ function onTime (time){
 //create display videos
 const displayVideos =(videos)=>{
     const videosContainer =document.getElementById('videos');
-      videosContainer.innerHTML =""
-     videos.map(item =>{
+    //on button click
+      videosContainer.innerHTML ="";
+        if(videos.length === 0){
+            videosContainer.classList.remove('grid')
+            videosContainer.innerHTML =`
+             <div class ="flex flex-col gap-5 justify-center items-center h-[400px] my-auto">
+                 <img src="../assets/Icon.png"/>
+                 <h1 class="text-4xl text-black font-bold">Oops!! Sorry, There is no content here</h1>
+             </div>
+            `;
+            
+            return
+        }
+        else{
+            videosContainer.classList.add('grid')
+        }
+        //
+        videos.map(item =>{
         const vCard = document.createElement('div')
         vCard.classList='card bg-base-100 '
         vCard.innerHTML=`
@@ -87,9 +107,6 @@ const displayVideos =(videos)=>{
 }
 
 
-
-
-
 // Create Display CAtegories
 const displayCategories = (categories)=>{
      
@@ -99,7 +116,7 @@ const displayCategories = (categories)=>{
      //create button
      const div = document.createElement("div");
      div.innerHTML = `
-        <button onclick="loadCategoriesVideos(${item.category_id})" class ="btn"> ${item.category}</button>
+        <button id= "bg-${item.category_id}" onclick="loadCategoriesVideos(${item.category_id} )" class ="btn"> ${item.category}</button>
      `
      //add button to container
      categoriesContainer.append(div)
