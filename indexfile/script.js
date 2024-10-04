@@ -10,8 +10,8 @@ const loadCategories = ()=>{
 }
 
 //loadvideos
-const loadVideos=()=>{
-    fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+const loadVideos=(searchText = '')=>{
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then(res=> res.json())
     .then(data => displayVideos(data.videos))
     .catch((error)=> console.error('error happend :' , error));
@@ -162,6 +162,15 @@ const removeActiveClass = ()=>{
          btn.classList.remove('active')
     }
 }
+
+
+//for 
+document.getElementById('searchid').addEventListener('keyup', (e)=>{
+    loadVideos(e.target.value)
+    
+})
+
+
 
 
 
