@@ -24,12 +24,15 @@ const loadCategoriesVideos = (id)=>{
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
     .then(res=> res.json())
     .then(data =>{
+         removeActiveClass();
         const activeBtn = document.getElementById(`bg-${id}`);
-         activeBtn.classList='bg-red-300 text-white btn'
-        displayVideos(data.category)
+         activeBtn.classList='active'
+        displayVideos(data.category);
+        
     })
     .catch((error)=> console.error('error happend :' , error));      
 }
+
 
 
 // time set up dynamically
@@ -116,7 +119,7 @@ const displayCategories = (categories)=>{
      //create button
      const div = document.createElement("div");
      div.innerHTML = `
-        <button id= "bg-${item.category_id}" onclick="loadCategoriesVideos(${item.category_id} )" class ="btn"> ${item.category}</button>
+        <button id= "bg-${item.category_id}" onclick="loadCategoriesVideos(${item.category_id} )" class ="btn category-btn"> ${item.category}</button>
      `
      //add button to container
      categoriesContainer.append(div)
@@ -125,6 +128,17 @@ const displayCategories = (categories)=>{
   
 
 }
+
+const removeActiveClass = ()=>{
+    const buttons= document.getElementsByClassName("category-btn");
+  
+    for(let btn of buttons){
+        
+         btn.classList.remove('active')
+    }
+}
+
+
 
 
 loadCategories();
