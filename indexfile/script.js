@@ -26,7 +26,7 @@ const loadCategoriesVideos = (id)=>{
     .then(data =>{
          removeActiveClass();
         const activeBtn = document.getElementById(`bg-${id}`);
-         activeBtn.classList='active'
+         activeBtn.classList.add ('active')
         displayVideos(data.category);
         
     })
@@ -99,6 +99,7 @@ const displayVideos =(videos)=>{
                      ${item.authors[0]?.verified === true ?'<img src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" class="w-4 h-4"/>' : ' '} 
                     </div>
                     <span class="text-sm text-slate-400 font-normal">${item.others?.views}</span>
+                    <button onclick="loadDetails('${item.video_id}')" class="w-14 text-xs  py-1 bg-slate-300 rounded-md text-center capitalize font-medium text-lime-100"> details</button>
                 </div>
             </div>
 
@@ -110,6 +111,31 @@ const displayVideos =(videos)=>{
 }
 
 
+// 
+const loadDetails= async(videoId)=>{
+    const url= `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`
+    const res = await fetch(url);
+    const data = await res.json();
+   displayDetails(data.video)
+
+}
+
+
+const displayDetails=(vDetails)=>{
+    const modal = document.getElementById('modalDetails');
+    // const div= document.createElement(div)
+    modal.innerHTML=`
+      <img class="rounded-md" src= ${vDetails.thumbnail} />
+      <p class="bg-slate-300 text-sm font-medium p-3 rounded-md mt-3"> ${vDetails.description}</p>
+      <span class="bg-slate-300 text-sm font-medium p-3 rounded-md mt-3 inline-block">${vDetails.authors[0]?.profile_name}</span>
+    `
+    // modal.append()
+    //way one
+    //document.getElementById('mymodal').click(); // to show modal by click
+    // way-two
+    document.getElementById('mymodal5').showModal();
+}
+
 // Create Display CAtegories
 const displayCategories = (categories)=>{
      
@@ -119,7 +145,7 @@ const displayCategories = (categories)=>{
      //create button
      const div = document.createElement("div");
      div.innerHTML = `
-        <button id= "bg-${item.category_id}" onclick="loadCategoriesVideos(${item.category_id} )" class ="btn category-btn"> ${item.category}</button>
+        <button id= "bg-${item.category_id}" onclick="loadCategoriesVideos(${item.category_id} )" class ="btn category-btn "> ${item.category}</button>
      `
      //add button to container
      categoriesContainer.append(div)
@@ -128,12 +154,11 @@ const displayCategories = (categories)=>{
   
 
 }
-
+//remove class
 const removeActiveClass = ()=>{
     const buttons= document.getElementsByClassName("category-btn");
   
     for(let btn of buttons){
-        
          btn.classList.remove('active')
     }
 }

@@ -1,6 +1,6 @@
 .active{
-    background-color: rgba(255, 0, 0, 0.525);
-    color:azure;
-    padding: 6px 10px 6px 10px;
+    background-color: rgba(255, 0, 0, 0.525)!important;
+    color:azure!important;
+    padding: 6px 10px 6px 10px!important
     
 }
